@@ -1,0 +1,56 @@
+<mvc:View 
+	controllerName="com.add.vault.controller.Main"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:f="sap.f"
+	displayBlock="true"
+	xmlns="sap.m">
+	<f:FlexibleColumnLayout id="flexibleColumnLayoutRegistration">
+		<f:beginColumnPages>
+			<Page title="Vault" titleAlignment="Center">
+				<headerContent>
+					<Button id="buttonDelete" icon="sap-icon://delete" press="selectDelete"/>
+					<Button id="buttonCancel" text="Cancelar" icon="sap-icon://cancel" visible="false" press="cancelDelete"/>
+				</headerContent>
+				<content>
+					<Panel>
+						<Table 
+							id="listSecretsTable"
+							delete="_deleteLine"
+							items="{ path : 'listSecrets>/data' }">
+							<columns>
+								<Column
+									id="nameCol"
+									width="12em">
+									<Text text="Data"/>
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem press="openDetails" type="Navigation" custom:id="{listSecrets>}">
+									<cells>
+										<Text text="{listSecrets>}"/>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>
+					</Panel>
+				</content>
+			</Page>
+			<Page 
+				id="pageVaultDetail" 
+				title="Vault Detail"
+				titleAlignment="Center">
+				<headerContent>
+					<Button icon="sap-icon://decline" press="onCloseDetail"/>
+				</headerContent>
+				<content>
+					<form:SimpleForm id="simpleVaultDetail">
+
+                    </form:SimpleForm>
+				</content>
+			</Page>
+		</f:beginColumnPages>
+	</f:FlexibleColumnLayout>
+</mvc:View>

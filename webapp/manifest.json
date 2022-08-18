@@ -1,0 +1,150 @@
+{
+	"_version": "1.12.0",
+
+	"sap.app": {
+		"id": "com.addvisor.dashboard",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"title": "{{app_title}}",
+		"description": "{{app_description}}",
+		"applicationVersion": {
+			"version": "1.0.0"
+		}
+	},
+
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {
+			"icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
+	},
+
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "com.add.vault.view.App",
+			"type": "XML",
+			"async": true,
+			"id": "app"
+		},
+		"dependencies": {
+			"minUI5Version": "1.90.1",
+			"libs": {
+				"sap.ui.core": {},
+				"sap.ui.layout": {},
+				"sap.ui.unified": {},
+				"sap.m": {}
+			}
+		},
+		"handleValidation": true,
+		"contentDensities": {
+			"compact": false,
+			"cozy": false
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "com.add.vault.i18n.i18n"
+				}
+			}
+		},
+		"resources": {
+            "css": [
+                {
+                    "uri": "css/style.css"
+                }
+            ]
+        },
+		"routing": {
+			"config": {
+                "routerClass": "sap.m.routing.Router",
+                "viewType": "XML",
+                "async": true,
+                "viewPath": "com.add.vault.view",
+                "controlAggregation": "pages",
+                "controlId": "app",
+                "clearControlAggregation": false
+            },
+			"routes": [
+				{
+					"name": "RouteMain",
+					"pattern": "",
+					"target": ["TargetMain"]
+				},
+				{
+					"name": "RouteCityhalls",
+					"pattern": "cityhalls",
+					"target": ["TargetCityhalls"]
+				},
+				{
+					"name": "RouteHeaders",
+					"pattern": "headers",
+					"target": ["TargetHeaders"]
+				},
+				{
+					"name": "RouteSystems",
+					"pattern": "systems",
+					"target": ["TargetSystems"]
+				},
+				{
+					"name": "RouteModels",
+					"pattern": "models",
+					"target": ["TargetModels"]
+				},
+				{
+					"name": "RouteCertificates",
+					"pattern": "certificates",
+					"target": ["TargetCertificates"]
+				}
+			],
+            "targets": {
+				"TargetMain": {
+					"viewType": "XML",
+					"transition": "slide",
+					"viewId": "Main",
+					"viewName": "Main"
+				},
+				"TargetCityhalls": {
+					"viewType": "XML",
+					"transition": "slide",
+					"viewId": "Cityhalls",
+					"viewName": "Cityhalls"
+				},
+				"TargetHeaders": {
+					"viewType": "XML",
+					"transition": "slide",
+					"viewId": "Headers",
+					"viewName": "Headers"
+				},
+				"TargetSystems": {
+					"viewType": "XML",
+					"transition": "slide",
+					"viewId": "Systems",
+					"viewName": "Systems"
+				},
+				"TargetModels": {
+					"viewType": "XML",
+					"transition": "slide",
+					"viewId": "Models",
+					"viewName": "Models"
+				},
+				"TargetCertificates": {
+					"viewType": "XML",
+					"transition": "slide",
+					"viewId": "Certificates",
+					"viewName": "Certificates"
+				}
+            }
+		}
+	}
+}

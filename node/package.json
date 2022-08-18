@@ -1,0 +1,23 @@
+{
+  "name": "add-vault-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "npm-run-all -p dev:*",
+    "dev:server": "nodemon server.js",
+    "dev:queue": "nodemon src/queue.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16",
+    "npm-run-all": "^4.1.5"
+  }
+}
