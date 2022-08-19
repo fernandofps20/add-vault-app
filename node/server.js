@@ -3,12 +3,11 @@ const controller = require('./controller.js');
 const app = express();
 app.use(express.json());
 
+app.get('/local/api/:destination/:secretAlias', controller.destination);
 app.get('/local/api/:destination', controller.destination);
+app.put('/local/api/:destination/:secretAlias', controller.destination);
+app.post('/local/api/:destination/:secretAlias', controller.destination);
 app.delete('/local/api/:destination/:secretAlias', controller.destination);
-
-//app.get('/local/api/listSecrets', controller.listSecrets);
-//app.get('/local/api/retrieveSecret/:id', controller.retrieveSecret);
-//app.delete('/local/api/deleteSecret/:id', controller.deleteSecret);
 
 app.use('/local/', express.static('../webapp'));
 

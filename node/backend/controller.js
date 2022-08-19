@@ -81,52 +81,34 @@ module.exports = {
     },
     retrieveSecret: function (req, res) {
         let obj = JSON.parse(JSON.stringify(data.find(obj => {
-            return obj.name === secretAlias;
+            return obj.name === req.params.id;
         })));
         if (obj != undefined) {
             delete obj["name"];
             res.send(obj);
         } else {
             res.send({
-                "vaultResponse": `Secret nao encontrado - Alias: ${secretAlias}`
+                "vaultResponse": `Secret nao encontrado - Alias: ${req.params.id}`
             });
         }
     },
-    destination: function (req, res) {
-        switch (req.params.destination) {
-            case "listSecrets":
-                result = listSecrets();
-                res.send(result);
-                break;
-            case "retrieveSecret":
-                result = retrieveSecret(req.query.secretAlias);
-                res.send(result);
-                break;
-            case "deleteSecret":
-                result = deleteSecret(req.params.secretAlias);
-                res.send(result);
-                break;
-            case "upsertSecret":
-                res.send({
-                    "vaultResponse": "Gravado com sucesso"
-                });
-                break;
-            case "copySecret":
-                obj = data.find(obj => {
-                    return obj.name === req.body.params.secretAlias;
-                });
-                if (obj != undefined) {
-                    res.send({
-                        "vaultResponse": "Gravado com sucesso"
-                    });
-                } else {
-                    res.send({
-                        "vaultResponse": `Secret nao encontrado - Alias: ${req.body.params.secretAlias}`
-                    });
-                }
-                break;
-            default:
-                break;
+    copySecret: function (req, res) {
+        let obj = data.find(obj => {
+            return obj.name === req.params.id;
+        });
+        if (obj != undefined) {
+            res.send({
+                "vaultResponse": "Gravado com sucesso"
+            });
+        } else {
+            res.send({
+                "vaultResponse": `Secret nao encontrado - Alias: ${req.params.id}`
+            });
         }
+    },
+    upsertSecret: function (req, res) {
+        res.send({
+            "vaultResponse": "Gravado com sucesso"
+        });
     }
 }

@@ -1,130 +1,93 @@
-const data = [
-    {
-        "name": "companycert1",
-        "vaultResponse": "Secret obtido com sucesso - Alias: companycert1",
-        "data": {
-            "expiryDate": "20230123",
-            "ouField": "hash12390u12oi231u213o231",
-            "pbKey": "empty",
-            "pkcs12": "hash12312321321312321312312adslkj1ndlk1kldk1jlk1djlj",
-            "pkcs12Password": "hash1231312j12eklje2lj11",
-            "pvKey": "empty",
-            "secretType": "certificate",
-            "updatedAt": "2022-08-15T11:44:14.376Z"
-        }
-    }, {
-        "name": "companymail1",
-        "vaultResponse": "Secret obtido com sucesso - Alias: companymail1",
-        "data": {
-            "mailAddress": "mailbox@company.com",
-            "mailId": "mailbox",
-            "mailPassword": "hash121j22jl21jl1",
-            "mailUserAccount": "mailboxuser",
-            "mailUserDomain": "companydomain",
-            "passwordExpiryDate": "20230606",
-            "secretType": "mailcredentials",
-            "updatedAt": "2022-08-15T11:44:18.203Z"
-        }
-    }, {
-        "name": "companyoauth1",
-        "vaultResponse": "Secret obtido com sucesso - Alias: companyoauth1",
-        "data": {
-            "clientId": "hash213ljkkl13j23",
-            "clientSecret": "hashkj21jh3k21hj3",
-            "secretExpiryDate": "20230418",
-            "secretType": "oauthcredentials",
-            "tenant": "hash23j4jk32k342",
-            "updatedAt": "2022-08-15T11:44:45.652Z"
-        }
-    }, {
-        "name": "companyothers1",
-        "vaultResponse": "Secret obtido com sucesso - Alias: companyothers1",
-        "data": {
-            "credentialSecret": "hash12j3l21j1j2lk3j21l",
-            "secretType": "others",
-            "updatedAt": "2022-08-15T11:44:31.360Z"
-        }
-    }, {
-        "name": "companyuser1",
-        "vaultResponse": "Secret obtido com sucesso - Alias: companyuser1",
-        "data": {
-            "passwordExpiryDate": "20221230",
-            "secretType": "usercredentials",
-            "updatedAt": "2022-08-15T11:44:20.963Z",
-            "userAccount": "useraccount",
-            "userDirectoryAddress": "hash123hh21u3uh231",
-            "userDomain": "companydomain",
-            "userPassword": "hash12321j123jj231j"
-        }
-    }
-];
-const listSecrets = function () {
-    return {
-        "vaultResponse": "Secrets obtidos com sucesso",
-        "count": 7,
-        "data": [
-            "companycert1",
-            "companycert2",
-            "companymail1",
-            "companyoauth1",
-            "companyothers1",
-            "companyothers3",
-            "companyuser1"
-        ]
-    };
+const axios = require('axios');
+
+const listSecrets = async function () {
+    return await axios.request({
+        url: `http://localhost:13501/api/listSecrets`,
+        method: 'get',
+        headers: {
+            "accept": "application/json",
+            "content-type": "application/json"
+        },
+    }).then(response => {
+        return response.data;
+    }).catch(err => {
+        console.log('EEEEEXCEPTION: ' + err.toString());
+    });
 };
-const retrieveSecret = function (secretAlias) {
-    let obj = JSON.parse(JSON.stringify(data.find(obj => {
-        return obj.name === secretAlias;
-    })));
-    if (obj != undefined) {
-        delete obj["name"];
-        return obj;
-    } else {
-        return {
-            "vaultResponse": `Secret nao encontrado - Alias: ${secretAlias}`
-        };
-    }
+const retrieveSecret = async function (secretAlias) {
+    return await axios.request({
+        url: `http://localhost:13501/api/retrieveSecret/${secretAlias}`,
+        method: 'get',
+        headers: {
+            "accept": "application/json",
+            "content-type": "application/json"
+        },
+    }).then(response => {
+        return response.data;
+    }).catch(err => {
+        console.log('EEEEEXCEPTION: ' + err.toString());
+    });
 };
-const deleteSecret = function (secretAlias) {
-    return {
-        "vaultResponse": "Deletado com sucesso"
-    };
+const deleteSecret = async function (secretAlias) {
+    return await axios.request({
+        url: `http://localhost:13501/api/deleteSecret/${secretAlias}`,
+        method: 'delete',
+        headers: {
+            "accept": "application/json",
+            "content-type": "application/json"
+        },
+    }).then(response => {
+        return response.data;
+    }).catch(err => {
+        console.log('EEEEEXCEPTION: ' + err.toString());
+    });
 };
+const upsertSecret = async function (secretAlias) {
+    return await axios.request({
+        url: `http://localhost:13501/api/upsertSecret/${secretAlias}`,
+        method: 'post',
+        headers: {
+            "accept": "application/json",
+            "content-type": "application/json"
+        },
+    }).then(response => {
+        return response.data;
+    }).catch(err => {
+        console.log('EEEEEXCEPTION: ' + err.toString());
+    });
+};
+const copySecret = async function (secretAlias) {
+    return await axios.request({
+        url: `http://localhost:13501/api/copySecret/${secretAlias}`,
+        method: 'put',
+        headers: {
+            "accept": "application/json",
+            "content-type": "application/json"
+        },
+    }).then(response => {
+        return response.data;
+    }).catch(err => {
+        console.log('EEEEEXCEPTION: ' + err.toString());
+    });
+};
+
 module.exports = {
-    destination: function (req, res) {
+    destination: async function (req, res) {
         switch (req.params.destination) {
             case "listSecrets":
-                result = listSecrets();
-                res.send(result);
+                res.send(await listSecrets());
                 break;
             case "retrieveSecret":
-                result = retrieveSecret(req.query.secretAlias);
-                res.send(result);
+                res.send(await retrieveSecret(req.params.secretAlias));
                 break;
             case "deleteSecret":
-                result = deleteSecret(req.params.secretAlias);
-                res.send(result);
+                res.send(await deleteSecret(req.params.secretAlias));
                 break;
-                
             case "upsertSecret":
-                res.send({
-                    "vaultResponse": "Gravado com sucesso"
-                });
+                res.send(await upsertSecret(req.params.secretAlias));
                 break;
             case "copySecret":
-                obj = data.find(obj => {
-                    return obj.name === req.body.params.secretAlias;
-                });
-                if (obj != undefined) {
-                    res.send({
-                        "vaultResponse": "Gravado com sucesso"
-                    });
-                } else {
-                    res.send({
-                        "vaultResponse": `Secret nao encontrado - Alias: ${req.body.params.secretAlias}`
-                    });
-                }
+                res.send(await copySecret(req.params.secretAlias));
                 break;
             default:
                 break;

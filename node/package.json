@@ -8,7 +8,7 @@
     "start": "node server.js",
     "dev": "npm-run-all -p dev:*",
     "dev:server": "nodemon server.js",
-    "dev:queue": "nodemon src/queue.js"
+    "dev:queue": "nodemon backend/index.js"
   },
   "author": "",
   "license": "ISC",
