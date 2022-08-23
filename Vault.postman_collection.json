@@ -1,0 +1,134 @@
+{
+	"info": {
+		"_postman_id": "3f7fa3a7-b3ae-44c5-a444-85f6c2cd6b2d",
+		"name": "Vault",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "listSecrets",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:13500/local/api/listSecrets",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "13500",
+					"path": [
+						"local",
+						"api",
+						"listSecrets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "retrieveSecret",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:13500/local/api/retrieveSecret/companycert1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "13500",
+					"path": [
+						"local",
+						"api",
+						"retrieveSecret",
+						"companycert1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteSecret",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:13500/local/api/deleteSecret/companycert1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "13500",
+					"path": [
+						"local",
+						"api",
+						"deleteSecret",
+						"companycert1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upsertSecret",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"secretType\": \"usercredentials\",\r\n    \"secretAlias\": \"companyuser1\",\r\n    \"secret\": {\r\n        \"userDomain\": \"companydomain\",\r\n        \"userAccount\": \"useraccount\",\r\n        \"userPassword\": \"hash12321j123jj231j\",\r\n        \"passwordExpiryDate\": \"20221230\",\r\n        \"userDirectoryAddress\": \"hash123hh21u3uh231\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:13500/local/api/upsertSecret",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "13500",
+					"path": [
+						"local",
+						"api",
+						"upsertSecret"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "copySecret",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"secretType\": \"others\",\r\n    \"secretAlias\": \"companyothers1\",\r\n    \"newSecretAlias\": \"companyothers2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:13500/local/api/copySecret",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "13500",
+					"path": [
+						"local",
+						"api",
+						"copySecret"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -3,12 +3,12 @@ sap.ui.define([
 ], function (Object) {
     "use strict";
 
-    var Service = Object.extend("cap.trello.TimesheetManager.service.CoreService", {
+    return Object.extend("com.add.vault.service.CoreService", {
         constructor: function () { },
 
         http: function (url) {
             var core = {
-                ajax: function (method, url, headers, args, mimetype) {
+                ajax: function (method, url, headers, args) {
                     var promise = new Promise(function (resolve, reject) {
                         var client = new XMLHttpRequest();
                         var uri = url;
@@ -79,5 +79,4 @@ sap.ui.define([
             };
         }
     });
-    return Service;
 });

@@ -58,57 +58,78 @@ const data = [
         }
     }
 ];
-module.exports = {
-    listSecrets: function (req, res) {
-        res.send({
-            "vaultResponse": "Secrets obtidos com sucesso",
-            "count": 7,
-            "data": [
-                "companycert1",
-                "companycert2",
-                "companymail1",
-                "companyoauth1",
-                "companyothers1",
-                "companyothers3",
-                "companyuser1"
-            ]
-        });
-    },
-    deleteSecret: function (req, res) {
-        res.send({
-            "vaultResponse": "Deletado com sucesso"
-        });
-    },
-    retrieveSecret: function (req, res) {
-        let obj = JSON.parse(JSON.stringify(data.find(obj => {
-            return obj.name === req.params.id;
-        })));
-        if (obj != undefined) {
-            delete obj["name"];
-            res.send(obj);
-        } else {
-            res.send({
-                "vaultResponse": `Secret nao encontrado - Alias: ${req.params.id}`
-            });
-        }
-    },
-    copySecret: function (req, res) {
-        let obj = data.find(obj => {
-            return obj.name === req.params.id;
-        });
-        if (obj != undefined) {
-            res.send({
-                "vaultResponse": "Gravado com sucesso"
-            });
-        } else {
-            res.send({
-                "vaultResponse": `Secret nao encontrado - Alias: ${req.params.id}`
-            });
-        }
-    },
-    upsertSecret: function (req, res) {
-        res.send({
+const listSecrets = function (body) {
+    return {
+        "vaultResponse": "Secrets obtidos com sucesso",
+        "count": 7,
+        "data": [
+            "companycert1",
+            "companycert2",
+            "companymail1",
+            "companyoauth1",
+            "companyothers1",
+            "companyothers3",
+            "companyuser1"
+        ]
+    }
+};
+const retrieveSecret = function (body) {
+    let obj = JSON.parse(JSON.stringify(data.find(obj => {
+        return obj.name === body.params.secretAlias;
+    })));
+    if (obj != undefined) {
+        delete obj["name"];
+        return obj;
+    } else {
+        return {
+            "vaultResponse": `Secret nao encontrado - Alias: ${body.params.secretAlias}`
+        };
+    }
+};
+const deleteSecret = function (body) {
+    return {
+        "vaultResponse": "Deletado com sucesso"
+    }
+};
+const upsertSecret = function (body) {
+    return {
+        "vaultResponse": "Gravado com sucesso"
+    }
+};
+const copySecret = function (body) {
+    let obj = data.find(obj => {
+        return obj.name === body.params.secretAlias;
+    });
+    if (obj != undefined) {
+        return {
             "vaultResponse": "Gravado com sucesso"
-        });
+        };
+    } else {
+        return {
+            "vaultResponse": `Falha ao copiar secret - Secret nao encontrado - Alias: ${body.params.secretAlias}`
+        };
+    }
+};
+module.exports = {
+    destination: function (req, res) {
+        switch (req.body.actionName) {
+            case "vault.listSecrets":
+                res.send(listSecrets(req.body));
+                break;
+            case "vault.retrieveSecret":
+                res.send(retrieveSecret(req.body));
+                break;
+            case "vault.deleteSecret":
+                res.send(deleteSecret(req.body));
+                break;
+            case "vault.upsertSecret":
+                res.send(upsertSecret(req.body));
+                break;
+            case "vault.copySecret":
+                res.send(copySecret(req.body));
+                break;
+            default:
+                break;
+        }
     }
 }

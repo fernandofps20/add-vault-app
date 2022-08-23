@@ -5,8 +5,8 @@ app.use(express.json());
 
 app.get('/local/api/:destination/:secretAlias', controller.destination);
 app.get('/local/api/:destination', controller.destination);
-app.put('/local/api/:destination/:secretAlias', controller.destination);
-app.post('/local/api/:destination/:secretAlias', controller.destination);
+app.put('/local/api/:destination', controller.destination);
+app.post('/local/api/:destination', controller.destination);
 app.delete('/local/api/:destination/:secretAlias', controller.destination);
 
 app.use('/local/', express.static('../webapp'));

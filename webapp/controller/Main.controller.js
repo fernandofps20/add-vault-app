@@ -47,6 +47,8 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
     _onPressDelete: async function (id) {
       await this.vaultService.deleteSecret(id);
       this.updateModel(this.getModel("listSecrets"), id, "remove");
+      //this.getModel("listSecrets").setData(JSON.parse(await this.vaultService.listSecrets()));
+      //this.getModel("listSecrets").refresh(true);
       this.setMessageToast("Dado deletado com sucesso!");
       this.cancelDelete();
     },
