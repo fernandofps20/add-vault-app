@@ -11,8 +11,7 @@
 		<f:beginColumnPages>
 			<Page title="Vault" titleAlignment="Center">
 				<headerContent>
-					<Button id="buttonDelete" icon="sap-icon://delete" press="selectDelete"/>
-					<Button id="buttonCancel" text="Cancelar" icon="sap-icon://cancel" visible="false" press="cancelDelete"/>
+					<Button id="buttonAdd" icon="sap-icon://add" press="createCredentials"/>
 				</headerContent>
 				<content>
 					<Panel>
@@ -50,6 +49,15 @@
 
                     </form:SimpleForm>
 				</content>
+				<footer>
+					<OverflowToolbar id="overflowToolbar">
+						<Button text="Deletar" press="onPressDelete" icon="sap-icon://delete" type="Reject" visible="true" />
+                        <ToolbarSpacer/>
+						<Button text="Editar" press="onPressEdit" icon="sap-icon://edit" visible="true" type="Transparent"/>
+                        <Button id="btnSave" text="Salvar" press="onSaveForm" icon="sap-icon://save" visible="false" type="Transparent"/>
+                        <Button id="btnCancel" text="Cancelar" press="onCancelForm" icon="sap-icon://cancel" visible="false" type="Transparent"/>
+                    </OverflowToolbar>
+				</footer>
 			</Page>
 		</f:beginColumnPages>
 	</f:FlexibleColumnLayout>

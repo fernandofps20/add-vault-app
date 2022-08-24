@@ -3,6 +3,23 @@
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:form="sap.ui.layout.form"
 	xmlns:core="sap.ui.core">
-	<Dialog title="Others">
-	</Dialog>
+		<form:SimpleForm>
+			<Label text="secretType" />
+			<Select
+				change="onChangeCreateCredentials">
+				<items>
+					<core:Item text="certificate" key="certificate"/>
+					<core:Item text="mailCredentials" key="mailCredentials"/>
+					<core:Item text="oauthcredentials" key="oauthcredentials"/>
+					<core:Item text="userCredential" key="userCredential"/>
+					<core:Item text="others" key="others"/>
+				</items>
+			</Select>
+			<Label text="secretAlias" />
+			<Input value="{secretAlias}" />
+			<Label text="credentialSecret" />
+			<Input value="{credentialSecret}" />
+			<Label text="updatedAt" />
+			<Input value="{updatedAt}" />
+        </form:SimpleForm>
 </core:FragmentDefinition>

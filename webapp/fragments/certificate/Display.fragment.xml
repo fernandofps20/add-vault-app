@@ -3,6 +3,24 @@
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:form="sap.ui.layout.form"
 	xmlns:core="sap.ui.core">
-	<Dialog title="Certificate">
-	</Dialog>
+		<form:SimpleForm>
+			<Label text="secretType" />
+			<Text text="{retrieveSecret>/data/secretType}" />
+			<Label text="secretAlias" />
+			<Text text="{retrieveSecret>/data/secretAlias}" />
+			<Label text="expiryDate" />
+			<Text text="{retrieveSecret>/data/expiryDate}" />
+			<Label text="ouField" />
+			<Text text="{retrieveSecret>/data/ouField}" />
+			<Label text="pbKey" />
+			<Text text="{retrieveSecret>/data/pbKey}" />
+			<Label text="pkcs12" />
+			<Text text="{retrieveSecret>/data/pkcs12}" />
+			<Label text="pkcs12Password" />
+			<Text text="{retrieveSecret>/data/pkcs12Password}" />
+			<Label text="pvKey" />
+			<Text text="{retrieveSecret>/data/pvKey}" />
+			<Label text="updatedAt" />
+			<Text text="{retrieveSecret>/data/updatedAt}" />
+        </form:SimpleForm>
 </core:FragmentDefinition>

@@ -8,18 +8,16 @@
 			<Text text="{retrieveSecret>/data/secretType}" />
 			<Label text="secretAlias" />
 			<Text text="{retrieveSecret>/data/secretAlias}" />
-			<Label text="mailId" />
-			<Text text="{retrieveSecret>/data/mailId}" />
-			<Label text="mailAddress" />
-			<Text text="{retrieveSecret>/data/mailAddress}" />
-			<Label text="mailUserDomain" />
-			<Text text="{retrieveSecret>/data/mailUserDomain}" />
-			<Label text="mailUserAccount" />
-			<Text text="{retrieveSecret>/data/mailUserAccount}" />
-			<Label text="mailPassword" />
-			<Text text="{retrieveSecret>/data/mailPassword}" />
+			<Label text="userDomain" />
+			<Text text="{retrieveSecret>/data/userDomain}" />
+			<Label text="userAccount" />
+			<Text text="{retrieveSecret>/data/userAccount}" />
+			<Label text="userPassword" />
+			<Text text="{retrieveSecret>/data/userPassword}" />
 			<Label text="passwordExpiryDate" />
 			<Text text="{retrieveSecret>/data/passwordExpiryDate}" />
+			<Label text="userDirectoryAddress" />
+			<Text text="{retrieveSecret>/data/userDirectoryAddress}" />
 			<Label text="updatedAt" />
 			<Text text="{retrieveSecret>/data/updatedAt}" />
         </form:SimpleForm>

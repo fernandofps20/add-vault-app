@@ -6,7 +6,6 @@
 		<form:SimpleForm>
 			<Label text="secretType" />
 			<Select
-				selectedKey="certificate"
 				change="onChangeCreateCredentials">
 				<items>
 					<core:Item text="certificate" key="certificate"/>
@@ -18,17 +17,15 @@
 			</Select>
 			<Label text="secretAlias" />
 			<Input value="{secretAlias}" />
-			<Label text="expiryDate" />
-			<Input value="{expiryDate}" />
-			<Label text="ouField" />
-			<Input value="{ouField}" />
-			<Label text="pbKey" />
-			<Input value="{pbKey}" />
-			<Label text="pkcs12" />
-			<Input value="{pkcs12}" />
-			<Label text="pkcs12Password" />
-			<Input value="{pkcs12Password}" />
-			<Label text="pvKey" />
-			<Input value="{pvKey}" />
+			<Label text="tenant" />
+			<Input value="{tenant}" />
+			<Label text="clientId" />
+			<Input value="{clientId}" />
+			<Label text="clientSecret" />
+			<Input value="{clientSecret}" />
+			<Label text="secretExpiryDate" />
+			<Input value="{secretExpiryDate}" />
+			<Label text="updatedAt" />
+			<Input value="{updatedAt}" />
         </form:SimpleForm>
 </core:FragmentDefinition>

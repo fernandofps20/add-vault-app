@@ -1,4 +1,4 @@
-sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/UIComponent", "sap/ui/core/routing/History", "sap/ui/core/Core", "sap/m/MessageToast"], function (Controller, UIComponent, History, Core, MessageToast) {
+sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/UIComponent", "sap/ui/core/routing/History", "sap/ui/core/Core", "sap/m/MessageToast", "sap/ui/core/Fragment"], function (Controller, UIComponent, History, Core, MessageToast, Fragment) {
   return Controller.extend("com.add.vault.controller.BaseController", {
     getOwnerComponent: function () {
       return Controller.prototype.getOwnerComponent.call(this);
@@ -51,16 +51,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/UIComponent", "sap/ui/
     closeDetail: function () {
       this.oFlexibleColumnLayout.setLayout(sap.f.LayoutType.OneColumn);
     },
-    _pressSelectDelete: function (oTable) {
-      oTable.setMode("Delete");
-      this.byId("buttonCancel").setVisible(true);
-      this.byId("buttonDelete").setVisible(false);
-    },
-    _pressCancelDelete: function (oTable) {
-      oTable.setMode("None");
-      this.byId("buttonCancel").setVisible(false);
-      this.byId("buttonDelete").setVisible(true);
-    },
     updateModel: function(oModel, value, change) {
       if (change == "create") {
           oModel.getData().data.push(value);
@@ -75,6 +65,41 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/UIComponent", "sap/ui/
     },
     setMessageToast: function(msg) {
       MessageToast.show(msg);
+    },
+    openFragment: async function(sName) {
+      let sPath = `com.add.vault.fragments`;
+      let id = this.getView().getId() + "-" + sName;
+      if (!this._fragments[id]) {
+          this._fragments[id] = {
+              fragment: await Fragment.load({
+                  id: id,
+                  name: `${sPath}.${sName}`,
+                  controller: this
+              })
+          };
+          this.getView().addDependent(this._fragments[id].fragment);
+      }
+      let that = this;
+      setTimeout(function () {
+          that._fragments[id].fragment.open();
+      }, 100);
+    },
+    closeFragment: function() {
+      for (var f in this._fragments) {
+          if (this._fragments[f]["fragment"] && this._fragments[f].fragment["isOpen"] && this._fragments[f].fragment.isOpen()) {
+              this._fragments[f].fragment.close();
+          }
+      }
+    },
+    getFragmentId: function() {
+      for (var f in this._fragments) {
+          if (this._fragments[f]["fragment"] && this._fragments[f].fragment["isOpen"] && this._fragments[f].fragment.isOpen()) {
+              return f;
+          }
+      }
+    },
+    getFragmentControlById: function(sFragmentId, sId) {
+      return sap.ui.getCore().byId(`${sFragmentId}--${sId}`);
     }
   });
 });

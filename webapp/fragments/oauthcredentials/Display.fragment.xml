@@ -8,8 +8,14 @@
 			<Text text="{retrieveSecret>/data/secretType}" />
 			<Label text="secretAlias" />
 			<Text text="{retrieveSecret>/data/secretAlias}" />
-			<Label text="credentialSecret" />
-			<Text text="{retrieveSecret>/data/credentialSecret}" />
+			<Label text="tenant" />
+			<Text text="{retrieveSecret>/data/tenant}" />
+			<Label text="clientId" />
+			<Text text="{retrieveSecret>/data/clientId}" />
+			<Label text="clientSecret" />
+			<Text text="{retrieveSecret>/data/clientSecret}" />
+			<Label text="secretExpiryDate" />
+			<Text text="{retrieveSecret>/data/secretExpiryDate}" />
 			<Label text="updatedAt" />
 			<Text text="{retrieveSecret>/data/updatedAt}" />
         </form:SimpleForm>
