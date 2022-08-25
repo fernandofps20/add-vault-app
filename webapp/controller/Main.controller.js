@@ -1,4 +1,4 @@
-sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSONModel", "sap/m/Label", "sap/m/Text", "../service/VaultService", "sap/m/MessageBox", "sap/ui/core/Fragment", "sap/m/Dialog", "sap/m/Button", "sap/m/library"], function (BaseController, formatter, JSONModel, Label, Text, VaultService, MessageBox, Fragment, Dialog, Button, mobileLibrary) {
+sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSONModel", "../service/VaultService", "sap/m/MessageBox", "sap/ui/core/Fragment", "sap/m/Dialog", "sap/m/Button", "sap/m/library"], function (BaseController, formatter, JSONModel, VaultService, MessageBox, Fragment, Dialog, Button, mobileLibrary) {
   const ButtonType = mobileLibrary.ButtonType;
   const DialogType = mobileLibrary.DialogType;
   return BaseController.extend("com.add.vault.controller.Main", {
@@ -7,7 +7,7 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
     _fragments: [],
     onInit: async function () {
       this._setEventBus();
-      let oModelListSecrets = new JSONModel(JSON.parse(await this.vaultService.listSecrets()));
+      let oModelListSecrets = new JSONModel(await this.vaultService.listSecrets());
       this.setModel(oModelListSecrets, "listSecrets");
     },
     onCloseDetail: function () {
@@ -17,10 +17,10 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
     openDetails: async function (oEvent) {
       let oSource = oEvent.getSource();
       this.sValue = oSource.getCustomData()[0].getValue();
-      let oModelRetrieveSecret = new JSONModel(JSON.parse(await this.vaultService.retrieveSecret(this.sValue)));
+      let oModelRetrieveSecret = new JSONModel(await this.vaultService.retrieveSecret(this.sValue));
       oModelRetrieveSecret.getData().data.secretAlias = oSource.getCustomData()[0].getValue();
       this.setModel(oModelRetrieveSecret, "retrieveSecret");
-      let sPath = `com.add.vault.fragments`;
+      let sPath = `com.add.vault.fragment`;
       let sKey = oModelRetrieveSecret.getData().data.secretType;
       let sName = `${sKey}.Display`;
       let id = this.getView().getId() + "-" + sName;
@@ -48,17 +48,23 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
       });
     },
     _onPressDelete: async function (id) {
-      await this.vaultService.deleteSecret(id);
-      this.updateModel(this.getModel("listSecrets"), id, "remove");
+      let response = await this.vaultService.deleteSecret(id);
+      this.setMessageToast(response.vaultResponse);
       this.onCloseDetail();
-      //this.getModel("listSecrets").setData(JSON.parse(await this.vaultService.listSecrets()));
-      //this.getModel("listSecrets").refresh(true);
-      this.setMessageToast("Dado deletado com sucesso!");
+      this.getModel("listSecrets").setData(await this.vaultService.listSecrets());
+      this.getModel("listSecrets").refresh(true);
       this.sValue = "";
     },
     createCredentials: async function () {
+      this.onCloseDetail();
+      let oModelSecrets = new JSONModel();
+      await oModelSecrets.loadData("model/secrets.json");
+      let index = oModelSecrets.getData().map(function (data) {
+        return data.secretType;
+      }).indexOf("certificate");
+      this.setModel(new JSONModel(oModelSecrets.getData()[index]), "secret");
       let sName = "certificate.Change";
-      let sPath = `com.add.vault.fragments`;
+      let sPath = `com.add.vault.fragment`;
       let id = this.getView().getId() + "-" + sName;
       this.oCreateCredentials = new Dialog({
         title: "Create Secret",
@@ -68,9 +74,10 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
           controller: this
         }),
         beginButton: new Button({
+          type: ButtonType.Emphasized,
           text: "Salvar",
           press: function () {
-            this.oCreateCredentials.close();
+            this.onPressSave()
           }.bind(this)
         }),
         endButton: new Button({
@@ -85,16 +92,58 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
     },
     onChangeCreateCredentials: async function (oEvent) {
       let oSource = oEvent.getSource();
-      let sPath = `com.add.vault.fragments`;
+      let sPath = `com.add.vault.fragment`;
       let sKey = oSource.getSelectedKey();
       let sName = `${sKey}.Change`;
       let id = this.getView().getId() + "-" + sName;
+      let oModelSecrets = new JSONModel();
+      await oModelSecrets.loadData("model/secrets.json");
+      let index = oModelSecrets.getData().map(function (data) {
+        return data.secretType;
+      }).indexOf(sKey);
+      this.setModel(new JSONModel(oModelSecrets.getData()[index]), "secret");
       this.oCreateCredentials.destroyContent();
       this.oCreateCredentials.addContent(await Fragment.load({
         id: id,
         name: `${sPath}.${sName}`,
         controller: this
       }));
+    },
+    onPressSave: function () {
+      let that = this;
+      MessageBox.show("Tem certeza que deseja salvar?", {
+        icon: MessageBox.Icon.INFORMATION,
+        title: "Cancelar Cadastro",
+        actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+        emphasizedAction: MessageBox.Action.YES,
+        onClose: function (oAction) {
+          if (oAction == "YES") {
+            that._saveForm();
+          }
+        }
+      });
+    },
+    _saveForm: async function () {
+      let bValidationError = false;
+      try {
+        /*this.aInputs.forEach( (oInput) => {
+          bValidationError = this._validateInput(oInput) || bValidationError;
+        }, this);
+        if (bValidationError) throw new Error("Complete as informações");*/
+        let index = this.getModel("listSecrets").getData().data.indexOf(this.getModel("secret").getData().secretAlias);
+        if (index != -1) throw new Error("SecretAlias já cadastrado");
+        let response = await this.vaultService.upsertSecret(this.getModel("secret").getData());
+        this.getModel("listSecrets").setData(await this.vaultService.listSecrets());
+        this.getModel("listSecrets").refresh(true);
+        this.setMessageToast(response.vaultResponse);
+        this.oCreateCredentials.close();
+      } catch (err) {
+        this.alertMessageBox(err.message);
+      }
+    },
+    onPressEdit: function() {
+      this.closeFragment();
+      this.openFragment("cityhalls.Change");
     }
   });
 });

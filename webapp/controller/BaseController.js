@@ -1,4 +1,4 @@
-sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/UIComponent", "sap/ui/core/routing/History", "sap/ui/core/Core", "sap/m/MessageToast", "sap/ui/core/Fragment"], function (Controller, UIComponent, History, Core, MessageToast, Fragment) {
+sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/UIComponent", "sap/ui/core/routing/History", "sap/ui/core/Core", "sap/m/MessageToast", "sap/ui/core/Fragment", "sap/m/MessageBox"], function (Controller, UIComponent, History, Core, MessageToast, Fragment, MessageBox) {
   return Controller.extend("com.add.vault.controller.BaseController", {
     getOwnerComponent: function () {
       return Controller.prototype.getOwnerComponent.call(this);
@@ -65,6 +65,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/UIComponent", "sap/ui/
     },
     setMessageToast: function(msg) {
       MessageToast.show(msg);
+    },
+    alertMessageBox: function(msg) {
+      MessageBox.alert(msg);
     },
     openFragment: async function(sName) {
       let sPath = `com.add.vault.fragments`;

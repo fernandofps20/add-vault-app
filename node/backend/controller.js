@@ -59,18 +59,13 @@ const data = [
     }
 ];
 const listSecrets = function (body) {
+    let secret = data.map(obj => {
+        return obj.name;
+    });
     return {
         "vaultResponse": "Secrets obtidos com sucesso",
-        "count": 7,
-        "data": [
-            "companycert1",
-            "companycert2",
-            "companymail1",
-            "companyoauth1",
-            "companyothers1",
-            "companyothers3",
-            "companyuser1"
-        ]
+        "count": data.length,
+        "data": secret
     }
 };
 const retrieveSecret = function (body) {
@@ -87,11 +82,31 @@ const retrieveSecret = function (body) {
     }
 };
 const deleteSecret = function (body) {
+    let index = data.map(function (data) {
+        return data.name;
+    }).indexOf(body.params.secretAlias);
+    data.splice(index, 1);
     return {
         "vaultResponse": "Deletado com sucesso"
     }
 };
 const upsertSecret = function (body) {
+    let index = data.map(function (data) {
+        return data.name;
+    }).indexOf(body.params.secretAlias);
+    if(index == -1){
+        data.push({
+            name : body.params.secretAlias,
+            vaultResponse: `Secret obtido com sucesso - Alias: ${body.params.secretType}`,
+            data:{...body.params.secret, updatedAt: new Date(), secretType: body.params.secretType}
+        });
+    } else {
+        data[index] = {
+            name : body.params.secretAlias,
+            vaultResponse: `Secret obtido com sucesso - Alias: ${body.params.secretType}`,
+            data:{...body.params.secret, updatedAt: new Date(), secretType: body.params.secretType}
+        };
+    }
     return {
         "vaultResponse": "Gravado com sucesso"
     }

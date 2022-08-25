@@ -1,0 +1,23 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+		<form:SimpleForm>
+			<Label text="secretType" />
+			<core:Fragment
+				fragmentName="com.add.vault.fragment.SelectSecret"
+				type="XML">
+			</core:Fragment>
+			<Label text="secretAlias" />
+			<Input value="{secret>/secretAlias}" />
+			<Label text="tenant" />
+			<Input value="{secret>/secret/tenant}" />
+			<Label text="clientId" />
+			<Input value="{secret>/secret/clientId}" />
+			<Label text="clientSecret" />
+			<Input value="{secret>/secret/clientSecret}" />
+			<Label text="secretExpiryDate" />
+			<Input value="{secret>/secret/secretExpiryDate}" />
+        </form:SimpleForm>
+</core:FragmentDefinition>

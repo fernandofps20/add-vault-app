@@ -14,7 +14,7 @@ const listSecrets = async function () {
                 "secretType": "",
                 "companyCode": ""
             }
-        },
+        }
     }).then(response => {
         return response.data;
     }).catch(err => {

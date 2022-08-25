@@ -50,7 +50,7 @@ sap.ui.define([
                         }
                         client.onload = function () {
                             if (this.status === 200 || this.status === 201 || this.status === 204) {
-                                resolve(this.response);
+                                resolve(JSON.parse(this.response));
                             } else {
                                 reject(this.statusText);
                             }
