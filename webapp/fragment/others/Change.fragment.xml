@@ -10,7 +10,7 @@
 				type="XML">
 			</core:Fragment>
 			<Label text="secretAlias" />
-			<Input value="{secret/secretAlias}" />
+			<Input value="{secret>/secretAlias}" />
 			<Label text="credentialSecret" />
 			<Input value="{secret>/secret/credentialSecret}" />
         </form:SimpleForm>

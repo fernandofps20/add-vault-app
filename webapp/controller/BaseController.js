@@ -70,7 +70,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/UIComponent", "sap/ui/
       MessageBox.alert(msg);
     },
     openFragment: async function(sName) {
-      let sPath = `com.add.vault.fragments`;
+      let sPath = `com.add.vault.fragment`;
       let id = this.getView().getId() + "-" + sName;
       if (!this._fragments[id]) {
           this._fragments[id] = {

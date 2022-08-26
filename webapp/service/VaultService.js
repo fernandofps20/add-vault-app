@@ -10,7 +10,7 @@ sap.ui.define(["./CoreService"], function (CoreService) {
             return this.http("api/upsertSecret").post(false, body);
         },
         copySecret: function (body) {
-            return this.http("/api/copySecret").put(false, body);
+            return this.http("api/copySecret").put(false, body);
         },
         deleteSecret: function (secretAlias) {
             return this.http(`api/deleteSecret/${secretAlias}`).delete();
