@@ -1,5 +1,6 @@
 sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/UIComponent", "sap/ui/core/routing/History", "sap/ui/core/Core", "sap/m/MessageToast", "sap/ui/core/Fragment", "sap/m/MessageBox"], function (Controller, UIComponent, History, Core, MessageToast, Fragment, MessageBox) {
   return Controller.extend("com.add.vault.controller.BaseController", {
+    _fragments: [],
     getOwnerComponent: function () {
       return Controller.prototype.getOwnerComponent.call(this);
     },

@@ -4,11 +4,11 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
   return BaseController.extend("com.add.vault.controller.Main", {
     formatter: formatter,
     vaultService: new VaultService(),
-    _fragments: [],
     onInit: async function () {
       this._setEventBus();
       let oModelListSecrets = new JSONModel(await this.vaultService.listSecrets());
       this.setModel(oModelListSecrets, "listSecrets");
+      this.setModel(new JSONModel(new Date()), "minDate");
     },
     onCloseDetail: function () {
       this.getView().byId("pageVaultDetail").destroyContent();
@@ -134,6 +134,30 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
         }
       });
     },
+    onFileChange: async function (oEvent) {
+      let oSource = oEvent.getSource();
+      if (this.getModel("secret").getData().secretType == "certificate") {
+        switch (oSource.getProperty("name")) {
+          case `publicKeyFileUpload`:
+            this.getModel("secret").getData().pbKey = btoa(await oEvent.getParameters().files[0].text());
+            break;
+          case `privateKeyFileUpload`:
+            this.getModel("secret").getData().pvKey = btoa(await oEvent.getParameters().files[0].text());
+            break;
+          case `pkcs12FileUpload`:
+            this.getModel("secret").getData().pkcs12 = btoa(await oEvent.getParameters().files[0].text());
+            break;
+        }
+      }
+    },
+    handleChange: function (oEvent) {
+      let bValid = oEvent.getParameter("valid");
+
+      if (!bValid) {
+        this.setMessageToast("Data inserida não é valida");
+        return;
+      }
+    },
     _saveForm: async function () {
       let bValidationError = false;
       try {
@@ -147,14 +171,15 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
         this.getModel("listSecrets").setData(await this.vaultService.listSecrets());
         this.getModel("listSecrets").refresh(true);
         this.setMessageToast(response.vaultResponse);
+        this.oCreateCredentials.destroyContent();
         this.oCreateCredentials.close();
       } catch (err) {
         this.alertMessageBox(err.message);
       }
     },
     onPressEdit: async function () {
-      let { secretAlias, secretType, updatedAt, ...secret } = this.getModel("retrieveSecret").getData().data;
-      this.setModel(new JSONModel({ secretType, secretAlias, secret }), "secret");
+      let { updatedAt, ...secret } = this.getModel("retrieveSecret").getData().data;
+      this.setModel(new JSONModel(secret), "secret");
       this.getView().byId("btnEdit").setVisible(false);
       this.getView().byId("btnCopy").setVisible(false);
       this.getView().byId("btnDelete").setVisible(false);
@@ -172,6 +197,7 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
         controller: this
       }));
       this.getFragmentControlById(id, "selectSecret").setEnabled(false);
+      this.getFragmentControlById(id, "inputSecretAlias").setEnabled(false);
     },
     onPressCancelEdit: async function () {
       this.getView().byId("btnEdit").setVisible(true);
@@ -224,7 +250,7 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
     onPressCopy: function () {
       this.onCloseDetail();
       let { secretAlias, secretType } = this.getModel("retrieveSecret").getData().data;
-      this.setModel(new JSONModel({secretAlias, secretType}), "copySecret");
+      this.setModel(new JSONModel({ secretAlias, secretType }), "copySecret");
       this.openFragment("DialogCopySecret");
     },
     onPressCancelCopy: function () {

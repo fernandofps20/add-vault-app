@@ -9,19 +9,21 @@
 				fragmentName="com.add.vault.fragment.SelectSecret"
 				type="XML">
 			</core:Fragment>
-			<Label text="secretAlias" />
-			<Input value="{secret>/secretAlias}" />
+			<core:Fragment
+				fragmentName="com.add.vault.fragment.SecretAlias"
+				type="XML">
+			</core:Fragment>
 			<Label text="mailId" />
-			<Input value="{secret>/secret/mailId}" />
+			<Input value="{secret>/mailId}" />
 			<Label text="mailAddress" />
-			<Input value="{secret>/secret/mailAddress}" />
+			<Input value="{secret>/mailAddress}" />
 			<Label text="mailUserDomain" />
-			<Input value="{secret>/secret/mailUserDomain}" />
+			<Input value="{secret>/mailUserDomain}" />
 			<Label text="mailUserAccount" />
-			<Input value="{secret>/secret/mailUserAccount}" />
+			<Input value="{secret>/mailUserAccount}" />
 			<Label text="mailPassword" />
-			<Input value="{secret>/secret/mailPassword}" />
+			<Input value="{secret>/mailPassword}" />
 			<Label text="passwordExpiryDate" />
-			<Input value="{secret>/secret/passwordExpiryDate}" />
+			<Input value="{secret>/passwordExpiryDate}" />
         </form:SimpleForm>
 </core:FragmentDefinition>

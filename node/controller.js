@@ -65,6 +65,7 @@ const deleteSecret = async function (secretAlias) {
     });
 };
 const upsertSecret = async function (body) {
+    const { secretType, secretAlias, ...secret } = body;
     return await axios.request({
         url: `http://localhost:13501/api/call`,
         method: 'post',
@@ -73,8 +74,8 @@ const upsertSecret = async function (body) {
             "content-type": "application/json"
         },
         data: {
-            actionName: "vault.upsertSecret",
-            params: body
+            "actionName": "vault.upsertSecret",
+            "params": { secretType, secretAlias, secret }
         },
     }).then(response => {
         return response.data;

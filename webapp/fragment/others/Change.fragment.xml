@@ -9,9 +9,11 @@
 				fragmentName="com.add.vault.fragment.SelectSecret"
 				type="XML">
 			</core:Fragment>
-			<Label text="secretAlias" />
-			<Input value="{secret>/secretAlias}" />
+			<core:Fragment
+				fragmentName="com.add.vault.fragment.SecretAlias"
+				type="XML">
+			</core:Fragment>
 			<Label text="credentialSecret" />
-			<Input value="{secret>/secret/credentialSecret}" />
+			<Input value="{secret>/credentialSecret}" />
         </form:SimpleForm>
 </core:FragmentDefinition>

@@ -9,15 +9,17 @@
 				fragmentName="com.add.vault.fragment.SelectSecret"
 				type="XML">
 			</core:Fragment>
-			<Label text="secretAlias" />
-			<Input value="{secret>/secretAlias}" />
+			<core:Fragment
+				fragmentName="com.add.vault.fragment.SecretAlias"
+				type="XML">
+			</core:Fragment>
 			<Label text="tenant" />
-			<Input value="{secret>/secret/tenant}" />
+			<Input value="{secret>/tenant}" />
 			<Label text="clientId" />
-			<Input value="{secret>/secret/clientId}" />
+			<Input value="{secret>/clientId}" />
 			<Label text="clientSecret" />
-			<Input value="{secret>/secret/clientSecret}" />
+			<Input value="{secret>/clientSecret}" />
 			<Label text="secretExpiryDate" />
-			<Input value="{secret>/secret/secretExpiryDate}" />
+			<Input value="{secret>/secretExpiryDate}" />
         </form:SimpleForm>
 </core:FragmentDefinition>
