@@ -9,7 +9,7 @@
 	xmlns="sap.m">
 	<f:FlexibleColumnLayout id="flexibleColumnLayoutRegistration">
 		<f:beginColumnPages>
-			<Page title="Vault" titleAlignment="Center">
+			<Page title="{i18n>app_title}" titleAlignment="Center">
 				<headerContent>
 					<Button id="buttonAdd" icon="sap-icon://add" press="createCredentials"/>
 				</headerContent>

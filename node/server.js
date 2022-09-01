@@ -1,6 +1,7 @@
 const express = require('express');
 const controller = require('./controller.js');
 const app = express();
+require('dotenv').config();
 app.use(express.json());
 
 app.get('/local/api/:destination/:secretAlias', controller.destination);

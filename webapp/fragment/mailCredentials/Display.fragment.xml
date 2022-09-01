@@ -4,23 +4,23 @@
 	xmlns:form="sap.ui.layout.form"
 	xmlns:core="sap.ui.core">
 		<form:SimpleForm>
-			<Label text="secretType" />
+			<Label text="{i18n>secretType}" />
 			<Text text="{retrieveSecret>/data/secretType}" />
-			<Label text="secretAlias" />
+			<Label text="{i18n>secretAlias}" />
 			<Text text="{retrieveSecret>/data/secretAlias}" />
-			<Label text="mailId" />
+			<Label text="{i18n>mailId}" />
 			<Text text="{retrieveSecret>/data/mailId}" />
-			<Label text="mailAddress" />
+			<Label text="{i18n>mailAddress}" />
 			<Text text="{retrieveSecret>/data/mailAddress}" />
-			<Label text="mailUserDomain" />
+			<Label text="{i18n>mailUserDomain}" />
 			<Text text="{retrieveSecret>/data/mailUserDomain}" />
-			<Label text="mailUserAccount" />
+			<Label text="{i18n>mailUserAccount}" />
 			<Text text="{retrieveSecret>/data/mailUserAccount}" />
-			<Label text="mailPassword" />
+			<Label text="{i18n>mailPassword}" />
 			<Text text="{retrieveSecret>/data/mailPassword}" />
-			<Label text="passwordExpiryDate" />
+			<Label text="{i18n>passwordExpiryDate}" />
 			<Text text="{retrieveSecret>/data/passwordExpiryDate}" />
-			<Label text="updatedAt" />
+			<Label text="{i18n>updatedAt}" />
 			<Text text="{retrieveSecret>/data/updatedAt}" />
         </form:SimpleForm>
 </core:FragmentDefinition>

@@ -2,7 +2,7 @@ const axios = require('axios');
 
 const listSecrets = async function () {
     return await axios.request({
-        url: `http://localhost:13501/api/call`,
+        url: process.env.BACKEND_URL,
         method: 'post',
         headers: {
             "accept": "application/json",
@@ -23,7 +23,7 @@ const listSecrets = async function () {
 };
 const retrieveSecret = async function (secretAlias) {
     return await axios.request({
-        url: `http://localhost:13501/api/call`,
+        url: process.env.BACKEND_URL,
         method: 'post',
         headers: {
             "accept": "application/json",
@@ -44,7 +44,7 @@ const retrieveSecret = async function (secretAlias) {
 };
 const deleteSecret = async function (secretAlias) {
     return await axios.request({
-        url: `http://localhost:13501/api/call`,
+        url: process.env.BACKEND_URL,
         method: 'post',
         headers: {
             "accept": "application/json",
@@ -67,7 +67,7 @@ const deleteSecret = async function (secretAlias) {
 const upsertSecret = async function (body) {
     const { secretType, secretAlias, ...secret } = body;
     return await axios.request({
-        url: `http://localhost:13501/api/call`,
+        url: process.env.BACKEND_URL,
         method: 'post',
         headers: {
             "accept": "application/json",
@@ -85,7 +85,7 @@ const upsertSecret = async function (body) {
 };
 const copySecret = async function (body) {
     return await axios.request({
-        url: `http://localhost:13501/api/call`,
+        url: process.env.BACKEND_URL,
         method: 'post',
         headers: {
             "accept": "application/json",

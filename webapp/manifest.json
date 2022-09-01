@@ -80,31 +80,6 @@
 					"name": "RouteMain",
 					"pattern": "",
 					"target": ["TargetMain"]
-				},
-				{
-					"name": "RouteCityhalls",
-					"pattern": "cityhalls",
-					"target": ["TargetCityhalls"]
-				},
-				{
-					"name": "RouteHeaders",
-					"pattern": "headers",
-					"target": ["TargetHeaders"]
-				},
-				{
-					"name": "RouteSystems",
-					"pattern": "systems",
-					"target": ["TargetSystems"]
-				},
-				{
-					"name": "RouteModels",
-					"pattern": "models",
-					"target": ["TargetModels"]
-				},
-				{
-					"name": "RouteCertificates",
-					"pattern": "certificates",
-					"target": ["TargetCertificates"]
 				}
 			],
             "targets": {
@@ -113,36 +88,6 @@
 					"transition": "slide",
 					"viewId": "Main",
 					"viewName": "Main"
-				},
-				"TargetCityhalls": {
-					"viewType": "XML",
-					"transition": "slide",
-					"viewId": "Cityhalls",
-					"viewName": "Cityhalls"
-				},
-				"TargetHeaders": {
-					"viewType": "XML",
-					"transition": "slide",
-					"viewId": "Headers",
-					"viewName": "Headers"
-				},
-				"TargetSystems": {
-					"viewType": "XML",
-					"transition": "slide",
-					"viewId": "Systems",
-					"viewName": "Systems"
-				},
-				"TargetModels": {
-					"viewType": "XML",
-					"transition": "slide",
-					"viewId": "Models",
-					"viewName": "Models"
-				},
-				"TargetCertificates": {
-					"viewType": "XML",
-					"transition": "slide",
-					"viewId": "Certificates",
-					"viewName": "Certificates"
 				}
             }
 		}
