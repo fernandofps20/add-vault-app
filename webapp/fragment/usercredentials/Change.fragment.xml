@@ -14,14 +14,14 @@
 				type="XML">
 			</core:Fragment>
 			<Label text="{i18n>userDomain}" />
-			<Input value="{secret>/userDomain}" />
+			<Input value="{secret>/userDomain}" required="true"/>
 			<Label text="{i18n>userAccount}" />
-			<Input value="{secret>/userAccount}" />
+			<Input value="{secret>/userAccount}" required="true"/>
 			<Label text="{i18n>userPassword}" />
-			<Input value="{secret>/userPassword}" />
+			<Input value="{secret>/userPassword}" required="true"/>
 			<Label text="{i18n>passwordExpiryDate}" />
-			<Input value="{secret>/passwordExpiryDate}" />
+			<Input value="{secret>/passwordExpiryDate}" required="true"/>
 			<Label text="{i18n>userDirectoryAddress}" />
-			<Input value="{secret>/userDirectoryAddress}" />
+			<Input value="{secret>/userDirectoryAddress}" required="true"/>
         </form:SimpleForm>
 </core:FragmentDefinition>

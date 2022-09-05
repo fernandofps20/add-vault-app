@@ -112,10 +112,12 @@ const upsertSecret = function (body) {
     }
 };
 const copySecret = function (body) {
-    let obj = data.find(obj => {
+    let obj = JSON.parse(JSON.stringify(data.find(obj => {
         return obj.name === body.params.secretAlias;
-    });
+    })));
     if (obj != undefined) {
+        obj.name = body.params.newSecretAlias
+        data.push(obj);
         return {
             "vaultResponse": "Gravado com sucesso"
         };

@@ -165,8 +165,13 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
           bValidationError = this._validateInput(oInput) || bValidationError;
         }, this);
         if (bValidationError) throw new Error("Complete as informações");*/
-        let index = this.getModel("listSecrets").getData().data.indexOf(this.getModel("secret").getData().secretAlias);
+        let oModelSecret = this.getModel("secret");
+        let index = this.getModel("listSecrets").getData().data.indexOf(oModelSecret.getData().secretAlias);
         if (index != -1) throw new Error("SecretAlias já cadastrado");
+        aProperties = Object.entries(oModelSecret.getData());
+        aProperties.forEach((arr) => {
+          if (arr[1] == "") throw new Error("Preencha todas as informações")
+        });
         let response = await this.vaultService.upsertSecret(this.getModel("secret").getData());
         this.getModel("listSecrets").setData(await this.vaultService.listSecrets());
         this.getModel("listSecrets").refresh(true);
@@ -238,6 +243,11 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
           bValidationError = this._validateInput(oInput) || bValidationError;
         }, this);
         if (bValidationError) throw new Error("Complete as informações");*/
+        let oModelSecret = this.getModel("secret");
+        aProperties = Object.entries(oModelSecret.getData());
+        aProperties.forEach((arr) => {
+          if (arr[1] == "") throw new Error("Preencha todas as informações")
+        });
         let response = await this.vaultService.upsertSecret(this.getModel("secret").getData());
         this.getModel("listSecrets").setData(await this.vaultService.listSecrets());
         this.getModel("listSecrets").refresh(true);
@@ -277,7 +287,13 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
           bValidationError = this._validateInput(oInput) || bValidationError;
         }, this);
         if (bValidationError) throw new Error("Complete as informações");*/
-        let response = await this.vaultService.copySecret(this.getModel("copySecret").getData());
+        let oModelCopySecret = this.getModel("copySecret");
+        aProperties = Object.entries(oModelCopySecret.getData());
+        aProperties.forEach((arr) => {
+          if (arr[1] == "") throw new Error("Preencha todas as informações")
+        });
+        if(oModelCopySecret.getData().secretAlias == oModelCopySecret.getData().newSecretAlias) throw new Error("Nova credencial não pode ser igual a original");
+        let response = await this.vaultService.copySecret(oModelCopySecret.getData());
         this.getModel("listSecrets").setData(await this.vaultService.listSecrets());
         this.getModel("listSecrets").refresh(true);
         this.setMessageToast(response.vaultResponse);

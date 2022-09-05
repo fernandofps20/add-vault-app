@@ -20,9 +20,10 @@
 				value="{secret>/expiryDate}"
 				minDate="{minDate>/}" 
 				valueFormat="yyyy-MM-dd"
-				change="handleChange"/>
+				change="handleChange"
+				required="true"/>
 			<Label text="{i18n>ouField}" />
-			<Input value="{secret>/ouField}" />
+			<Input value="{secret>/ouField}" required="true"/>
 			<Label text="{i18n>pbKey}" />
 			<unified:FileUploader
 				id="publicKeyFileUploader"
@@ -44,7 +45,7 @@
 				uploadComplete="handleUploadComplete"/>
 			<!--<Input value="{secret>/secret/pkcs12}" />-->
 			<Label text="{i18n>pkcs12Password}" />
-			<Input value="{secret>/pkcs12Password}" />
+			<Input value="{secret>/pkcs12Password}" type="Password" required="true"/>
 			<Label text="{i18n>pvKey}" />
 			<unified:FileUploader
 				id="privateKeyFileUploader"

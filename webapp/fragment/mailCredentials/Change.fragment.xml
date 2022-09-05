@@ -14,16 +14,16 @@
 				type="XML">
 			</core:Fragment>
 			<Label text="{i18n>mailId}" />
-			<Input value="{secret>/mailId}" />
+			<Input value="{secret>/mailId}" required="true"/>
 			<Label text="{i18n>mailAddress}" />
-			<Input value="{secret>/mailAddress}" />
+			<Input value="{secret>/mailAddress}" required="true"/>
 			<Label text="{i18n>mailUserDomain}" />
-			<Input value="{secret>/mailUserDomain}" />
+			<Input value="{secret>/mailUserDomain}" required="true"/>
 			<Label text="{i18n>mailUserAccount}" />
-			<Input value="{secret>/mailUserAccount}" />
+			<Input value="{secret>/mailUserAccount}" required="true"/>
 			<Label text="{i18n>mailPassword}" />
-			<Input value="{secret>/mailPassword}" />
+			<Input value="{secret>/mailPassword}" required="true"/>
 			<Label text="{i18n>passwordExpiryDate}" />
-			<Input value="{secret>/passwordExpiryDate}" />
+			<Input value="{secret>/passwordExpiryDate}" required="true"/>
         </form:SimpleForm>
 </core:FragmentDefinition>

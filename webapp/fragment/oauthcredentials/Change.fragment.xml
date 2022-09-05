@@ -14,12 +14,12 @@
 				type="XML">
 			</core:Fragment>
 			<Label text="{i18n>tenant}" />
-			<Input value="{secret>/tenant}" />
+			<Input value="{secret>/tenant}" required="true"/>
 			<Label text="{i18n>clientId}" />
-			<Input value="{secret>/clientId}" />
+			<Input value="{secret>/clientId}" required="true"/>
 			<Label text="{i18n>clientSecret}" />
-			<Input value="{secret>/clientSecret}" />
+			<Input value="{secret>/clientSecret}" required="true"/>
 			<Label text="{i18n>secretExpiryDate}" />
-			<Input value="{secret>/secretExpiryDate}" />
+			<Input value="{secret>/secretExpiryDate}" required="true"/>
         </form:SimpleForm>
 </core:FragmentDefinition>
