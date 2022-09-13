@@ -15,7 +15,7 @@
 			<Label text="{i18n>userPassword}" />
 			<Text text="{retrieveSecret>/data/userPassword}" />
 			<Label text="{i18n>passwordExpiryDate}" />
-			<Text text="{retrieveSecret>/data/passwordExpiryDate}" />
+			<Text text="{path: 'retrieveSecret>/data/passwordExpiryDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'short', source: { pattern: 'yyyy/MM/dd' } } }" />
 			<Label text="{i18n>userDirectoryAddress}" />
 			<Text text="{retrieveSecret>/data/userDirectoryAddress}" />
 			<Label text="{i18n>updatedAt}" />

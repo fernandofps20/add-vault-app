@@ -168,10 +168,63 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
         let oModelSecret = this.getModel("secret");
         let index = this.getModel("listSecrets").getData().data.indexOf(oModelSecret.getData().secretAlias);
         if (index != -1) throw new Error("SecretAlias já cadastrado");
-        aProperties = Object.entries(oModelSecret.getData());
-        aProperties.forEach((arr) => {
-          if (arr[1] == "") throw new Error("Preencha todas as informações")
-        });
+        let oSecret = Object.assign({}, oModelSecret.getData());
+        switch (oModelSecret.getData().secretType) {
+          case "certificate":
+            if (oModelSecret.getData().pkcs12 != "") {
+              if (oModelSecret.getData().pkcs12Password == "") {
+                throw new Error("Preencha todas as informações corretamente");
+              } else {
+                delete oSecret.pbKey
+                delete oSecret.pvKey
+                oModelSecret.getData().pbKey == "";
+                oModelSecret.getData().pvKey == "";
+                for (const property in oSecret) {
+                  if (oSecret[property] == "") throw new Error("Preencha todas as informações corretamente");
+                }
+                oModelSecret.getData().pkcs12Password = btoa(oModelSecret.getData().pkcs12Password);
+              }
+            } else {
+              delete oSecret.pkcs12
+              delete oSecret.pkcs12Password
+              oModelSecret.getData().pkcs12 == "";
+              oModelSecret.getData().pkcs12Password == "";
+              for (const property in oSecret) {
+                if (oSecret[property] == "") throw new Error("Preencha todas as informações corretamente");
+              }
+            }
+            oModelSecret.getData().ouField = btoa(oModelSecret.getData().ouField);
+            break;
+          case "mailcredentials":
+            for (const property in oSecret) {
+              if (oSecret[property] == "") throw new Error("Preencha todas as informações");
+            }
+            oModelSecret.getData().mailPassword = btoa(oModelSecret.getData().mailPassword);
+            break;
+          case "oauthcredentials":
+            for (const property in oSecret) {
+              if (oSecret[property] == "") throw new Error("Preencha todas as informações");
+            }
+            break;
+          case "others":
+            for (const property in oSecret) {
+              if (oSecret[property] == "") throw new Error("Preencha todas as informações");
+            }
+            oModelSecret.getData().credentialSecret = btoa(oModelSecret.getData().credentialSecret);
+            break;
+          case "usercredentials":
+            for (const property in oSecret) {
+              if (oSecret[property] == "") throw new Error("Preencha todas as informações");
+            }
+            oModelSecret.getData().userPassword = btoa(oModelSecret.getData().userPassword);
+            oModelSecret.getData().userDirectoryAddress = btoa(oModelSecret.getData().userDirectoryAddress);
+            break;
+          default:
+            for (const property in oSecret) {
+              if (oSecret[property] == "") throw new Error("Preencha todas as informações");
+            }
+            break;
+        }
         let response = await this.vaultService.upsertSecret(this.getModel("secret").getData());
         this.getModel("listSecrets").setData(await this.vaultService.listSecrets());
         this.getModel("listSecrets").refresh(true);
@@ -244,10 +297,63 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
         }, this);
         if (bValidationError) throw new Error("Complete as informações");*/
         let oModelSecret = this.getModel("secret");
-        aProperties = Object.entries(oModelSecret.getData());
-        aProperties.forEach((arr) => {
-          if (arr[1] == "") throw new Error("Preencha todas as informações")
-        });
+        let oSecret = Object.assign({}, oModelSecret.getData());
+        switch (oModelSecret.getData().secretType) {
+          case "certificate":
+            if (oModelSecret.getData().pkcs12 != "") {
+              if (oModelSecret.getData().pkcs12Password == "") {
+                throw new Error("Preencha todas as informações corretamente");
+              } else {
+                delete oSecret.pbKey
+                delete oSecret.pvKey
+                oModelSecret.getData().pbKey == "";
+                oModelSecret.getData().pvKey == "";
+                for (const property in oSecret) {
+                  if (oSecret[property] == "") throw new Error("Preencha todas as informações corretamente");
+                }
+                oModelSecret.getData().pkcs12Password = btoa(oModelSecret.getData().pkcs12Password);
+              }
+            } else {
+              delete oSecret.pkcs12
+              delete oSecret.pkcs12Password
+              oModelSecret.getData().pkcs12 == "";
+              oModelSecret.getData().pkcs12Password == "";
+              for (const property in oSecret) {
+                if (oSecret[property] == "") throw new Error("Preencha todas as informações corretamente");
+              }
+            }
+            oModelSecret.getData().ouField = btoa(oModelSecret.getData().ouField);
+            break;
+          case "mailcredentials":
+            for (const property in oSecret) {
+              if (oSecret[property] == "") throw new Error("Preencha todas as informações");
+            }
+            oModelSecret.getData().mailPassword = btoa(oModelSecret.getData().mailPassword);
+            break;
+          case "oauthcredentials":
+            for (const property in oSecret) {
+              if (oSecret[property] == "") throw new Error("Preencha todas as informações");
+            }
+            break;
+          case "others":
+            for (const property in oSecret) {
+              if (oSecret[property] == "") throw new Error("Preencha todas as informações");
+            }
+            oModelSecret.getData().credentialSecret = btoa(oModelSecret.getData().credentialSecret);
+            break;
+          case "usercredentials":
+            for (const property in oSecret) {
+              if (oSecret[property] == "") throw new Error("Preencha todas as informações");
+            }
+            oModelSecret.getData().userPassword = btoa(oModelSecret.getData().userPassword);
+            oModelSecret.getData().userDirectoryAddress = btoa(oModelSecret.getData().userDirectoryAddress);
+            break;
+          default:
+            for (const property in oSecret) {
+              if (oSecret[property] == "") throw new Error("Preencha todas as informações");
+            }
+            break;
+        }
         let response = await this.vaultService.upsertSecret(this.getModel("secret").getData());
         this.getModel("listSecrets").setData(await this.vaultService.listSecrets());
         this.getModel("listSecrets").refresh(true);
@@ -292,7 +398,7 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
         aProperties.forEach((arr) => {
           if (arr[1] == "") throw new Error("Preencha todas as informações")
         });
-        if(oModelCopySecret.getData().secretAlias == oModelCopySecret.getData().newSecretAlias) throw new Error("Nova credencial não pode ser igual a original");
+        if (oModelCopySecret.getData().secretAlias == oModelCopySecret.getData().newSecretAlias) throw new Error("Nova credencial não pode ser igual a original");
         let response = await this.vaultService.copySecret(oModelCopySecret.getData());
         this.getModel("listSecrets").setData(await this.vaultService.listSecrets());
         this.getModel("listSecrets").refresh(true);

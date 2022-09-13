@@ -1,4 +1,5 @@
 const axios = require('axios');
+const secrets = require('./secrets.json');
 
 const listSecrets = async function () {
     return await axios.request({
@@ -29,11 +30,11 @@ const retrieveSecret = async function (secretAlias) {
             "accept": "application/json",
             "content-type": "application/json"
         },
-        data:{
+        data: {
             "actionName": "vault.retrieveSecret",
             "params": {
-                    "secretType": "",
-                    "secretAlias": secretAlias
+                "secretType": "",
+                "secretAlias": secretAlias
             }
         }
     }).then(response => {
@@ -53,9 +54,9 @@ const deleteSecret = async function (secretAlias) {
         data: {
             "actionName": "vault.deleteSecret",
             "params": {
-                    "secretType": "",
-                    "secretAlias": secretAlias,
-                    "companyCode": ""
+                "secretType": "",
+                "secretAlias": secretAlias,
+                "companyCode": ""
             }
         }
     }).then(response => {
@@ -65,41 +66,72 @@ const deleteSecret = async function (secretAlias) {
     });
 };
 const upsertSecret = async function (body) {
-    const { secretType, secretAlias, ...secret } = body;
-    return await axios.request({
-        url: process.env.BACKEND_URL,
-        method: 'post',
-        headers: {
-            "accept": "application/json",
-            "content-type": "application/json"
-        },
-        data: {
-            "actionName": "vault.upsertSecret",
-            "params": { secretType, secretAlias, secret }
-        },
-    }).then(response => {
-        return response.data;
-    }).catch(err => {
-        console.log('EEEEEXCEPTION: ' + err.toString());
-    });
+    try {
+        if (!body.hasOwnProperty('secretType')) throw new Error("Propriedade não encontrada");
+        let index = secrets.map(function (data) {
+            return data.secretType;
+        }).indexOf(body.secretType);
+        if (index == -1) throw new Error("SecretType não encontrado");
+        const obj = secrets[index]
+        if (Object.keys(body).length === Object.keys(obj).length) {
+            const prop = Object.keys(body).every(
+                key => obj.hasOwnProperty(key)
+                    && obj[key] === body[key]);
+            if (prop) throw new Error("Propriedades incorretas");
+        }
+        const { secretType, secretAlias, ...secret } = body;
+        return await axios.request({
+            url: process.env.BACKEND_URL,
+            method: 'post',
+            headers: {
+                "accept": "application/json",
+                "content-type": "application/json"
+            },
+            data: {
+                "actionName": "vault.upsertSecret",
+                "params": { secretType, secretAlias, secret }
+            },
+        }).then(response => {
+            return response.data;
+        }).catch(err => {
+            console.log('EEEEEXCEPTION: ' + err.toString());
+        });
+    } catch (error) {
+        return error
+    }
 };
 const copySecret = async function (body) {
-    return await axios.request({
-        url: process.env.BACKEND_URL,
-        method: 'post',
-        headers: {
-            "accept": "application/json",
-            "content-type": "application/json"
-        },
-        data: {
-            "actionName": "vault.copySecret",
-            "params": body
+    try {
+        const obj = {
+            secretType: "",
+            secretAlias: "",
+            newSecretAlias: ""
         }
-    }).then(response => {
-        return response.data;
-    }).catch(err => {
-        console.log('EEEEEXCEPTION: ' + err.toString());
-    });
+        if (Object.keys(body).length === Object.keys(obj).length) {
+            const prop = Object.keys(body).every(
+                key => obj.hasOwnProperty(key)
+                    && obj[key] === body[key]);
+            if (prop) throw new Error("Propriedades incorretas");
+        }
+        return await axios.request({
+            url: process.env.BACKEND_URL,
+            method: 'post',
+            headers: {
+                "accept": "application/json",
+                "content-type": "application/json"
+            },
+            data: {
+                "actionName": "vault.copySecret",
+                "params": body
+            }
+        }).then(response => {
+            return response.data;
+        }).catch(err => {
+            console.log('EEEEEXCEPTION: ' + err.toString());
+        });
+    } catch (error) {
+        return error
+    }
 };
 
 module.exports = {
