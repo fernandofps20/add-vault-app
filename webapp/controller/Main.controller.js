@@ -6,7 +6,8 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
     vaultService: new VaultService(),
     onInit: async function () {
       this._setEventBus();
-      let oModelListSecrets = new JSONModel(await this.vaultService.listSecrets());
+      const response = await this.vaultService.listSecrets()
+      let oModelListSecrets = new JSONModel(response.statusInfo.message);
       this.setModel(oModelListSecrets, "listSecrets");
       this.setModel(new JSONModel(new Date()), "minDate");
     },
@@ -22,7 +23,8 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
     openDetails: async function (oEvent) {
       let oSource = oEvent.getSource();
       this.sSecretAlias = oSource.getCustomData()[0].getValue();
-      let oModelRetrieveSecret = new JSONModel(await this.vaultService.retrieveSecret(this.sSecretAlias));
+      const response = await this.vaultService.retrieveSecret(this.sSecretAlias)
+      let oModelRetrieveSecret = new JSONModel(response.statusInfo.message);
       oModelRetrieveSecret.getData().data.secretAlias = oSource.getCustomData()[0].getValue();
       this.setModel(oModelRetrieveSecret, "retrieveSecret");
       this.getView().byId("btnEdit").setVisible(true);
@@ -59,9 +61,10 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
     },
     _onPressDelete: async function (id) {
       let response = await this.vaultService.deleteSecret(id);
-      this.setMessageToast(response.vaultResponse);
+      this.setMessageToast(response.statusInfo.message.vaultResponse);
       this.onCloseDetail();
-      this.getModel("listSecrets").setData(await this.vaultService.listSecrets());
+      response = await this.vaultService.listSecrets();
+      this.getModel("listSecrets").setData(response.statusInfo.message);
       this.getModel("listSecrets").refresh(true);
       this.sSecretAlias = "";
     },
@@ -226,9 +229,10 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
             break;
         }
         let response = await this.vaultService.upsertSecret(this.getModel("secret").getData());
-        this.getModel("listSecrets").setData(await this.vaultService.listSecrets());
+        this.setMessageToast(response.statusInfo.message.vaultResponse);
+        response = await this.vaultService.listSecrets();
+        this.getModel("listSecrets").setData(response.statusInfo.message);
         this.getModel("listSecrets").refresh(true);
-        this.setMessageToast(response.vaultResponse);
         this.oCreateCredentials.destroyContent();
         this.oCreateCredentials.close();
       } catch (err) {
@@ -355,9 +359,10 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
             break;
         }
         let response = await this.vaultService.upsertSecret(this.getModel("secret").getData());
-        this.getModel("listSecrets").setData(await this.vaultService.listSecrets());
+        this.setMessageToast(response.statusInfo.message.vaultResponse);
+        response = await this.vaultService.listSecrets();
+        this.getModel("listSecrets").setData(response.statusInfo.message);
         this.getModel("listSecrets").refresh(true);
-        this.setMessageToast(response.vaultResponse);
         this.onCloseDetail();
       } catch (err) {
         this.alertMessageBox(err.message);
@@ -400,9 +405,10 @@ sap.ui.define(["./BaseController", "../model/formatter", "sap/ui/model/json/JSON
         });
         if (oModelCopySecret.getData().secretAlias == oModelCopySecret.getData().newSecretAlias) throw new Error("Nova credencial não pode ser igual a original");
         let response = await this.vaultService.copySecret(oModelCopySecret.getData());
-        this.getModel("listSecrets").setData(await this.vaultService.listSecrets());
+        this.setMessageToast(response.statusInfo.message.vaultResponse);
+        response = await this.vaultService.listSecrets();
+        this.getModel("listSecrets").setData(response.statusInfo.message);
         this.getModel("listSecrets").refresh(true);
-        this.setMessageToast(response.vaultResponse);
         this.closeFragment();
       } catch (err) {
         this.alertMessageBox(err.message);

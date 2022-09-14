@@ -1,5 +1,6 @@
 const axios = require('axios');
 const secrets = require('./secrets.json');
+const { Buffer } = require('node:buffer');
 
 const listSecrets = async function () {
     return await axios.request({
@@ -17,9 +18,27 @@ const listSecrets = async function () {
             }
         }
     }).then(response => {
-        return response.data;
-    }).catch(err => {
-        console.log('EEEEEXCEPTION: ' + err.toString());
+        return {
+            context: "Success",
+            statusInfo: {
+                status: response.status,
+                errorCode: null,
+                message: response.data,
+                solution: null,
+                trace: null
+            }
+        }
+    }).catch(error => {
+        return {
+            context: "Error",
+            statusInfo: {
+                status: error.response.data,
+                errorCode: null,
+                message: error.response.data,
+                solution: null,
+                trace: null
+            }
+        }
     });
 };
 const retrieveSecret = async function (secretAlias) {
@@ -38,9 +57,48 @@ const retrieveSecret = async function (secretAlias) {
             }
         }
     }).then(response => {
-        return response.data;
-    }).catch(err => {
-        console.log('EEEEEXCEPTION: ' + err.toString());
+        switch (response.data.data.secretType) {
+            case "certificate":
+                //response.data.data.pkcs12Password = Buffer.from(response.data.data.pkcs12Password, 'base64').toString('utf8');
+                response.data.data.pkcs12Password = "";
+                response.data.data.ouField = Buffer.from(response.data.data.ouField, 'base64').toString('utf8');
+                break;
+            case "mailcredentials":
+                response.data.data.mailPassword = Buffer.from(response.data.data.mailPassword, 'base64').toString('utf8');
+                break;
+            case "oauthcredentials":
+                break;
+            case "others":
+                response.data.data.credentialSecret = Buffer.from(response.data.data.credentialSecret, 'base64').toString('utf8');
+                break;
+            case "usercredentials":
+                response.data.data.userPassword = Buffer.from(response.data.data.userPassword, 'base64').toString('utf8');
+                response.data.data.userDirectoryAddress = Buffer.from(response.data.data.userDirectoryAddress, 'base64').toString('utf8');
+                break;
+            default:
+                break;
+        }
+        return {
+            context: "Success",
+            statusInfo: {
+                status: response.status,
+                errorCode: null,
+                message: response.data,
+                solution: null,
+                trace: null
+            }
+        }
+    }).catch(error => {
+        return {
+            context: "Error",
+            statusInfo: {
+                status: error.response.data,
+                errorCode: null,
+                message: error.response.data,
+                solution: null,
+                trace: null
+            }
+        }
     });
 };
 const deleteSecret = async function (secretAlias) {
@@ -60,9 +118,27 @@ const deleteSecret = async function (secretAlias) {
             }
         }
     }).then(response => {
-        return response.data;
-    }).catch(err => {
-        console.log('EEEEEXCEPTION: ' + err.toString());
+        return {
+            context: "Success",
+            statusInfo: {
+                status: response.status,
+                errorCode: null,
+                message: response.data,
+                solution: null,
+                trace: null
+            }
+        }
+    }).catch(error => {
+        return {
+            context: "Error",
+            statusInfo: {
+                status: error.response.data,
+                errorCode: null,
+                message: error.response.data,
+                solution: null,
+                trace: null
+            }
+        }
     });
 };
 const upsertSecret = async function (body) {
@@ -78,6 +154,8 @@ const upsertSecret = async function (body) {
                 key => obj.hasOwnProperty(key)
                     && obj[key] === body[key]);
             if (prop) throw new Error("Propriedades incorretas");
+        } else {
+            throw new Error("Requisição invalida");
         }
         const { secretType, secretAlias, ...secret } = body;
         return await axios.request({
@@ -92,12 +170,39 @@ const upsertSecret = async function (body) {
                 "params": { secretType, secretAlias, secret }
             },
         }).then(response => {
-            return response.data;
-        }).catch(err => {
-            console.log('EEEEEXCEPTION: ' + err.toString());
+            return {
+                context: "Success",
+                statusInfo: {
+                    status: response.status,
+                    errorCode: null,
+                    message: response.data,
+                    solution: null,
+                    trace: null
+                }
+            }
+        }).catch(error => {
+            return {
+                context: "Error",
+                statusInfo: {
+                    status: error.response.data,
+                    errorCode: null,
+                    message: error.response.data,
+                    solution: null,
+                    trace: null
+                }
+            }
         });
     } catch (error) {
-        return error
+        return {
+            context: "Error",
+            statusInfo: {
+                status: 400,
+                errorCode: null,
+                message: error.message,
+                solution: null,
+                trace: null
+            }
+        }
     }
 };
 const copySecret = async function (body) {
@@ -112,6 +217,8 @@ const copySecret = async function (body) {
                 key => obj.hasOwnProperty(key)
                     && obj[key] === body[key]);
             if (prop) throw new Error("Propriedades incorretas");
+        } else {
+            throw new Error("Requisição invalida");
         }
         return await axios.request({
             url: process.env.BACKEND_URL,
@@ -125,32 +232,65 @@ const copySecret = async function (body) {
                 "params": body
             }
         }).then(response => {
-            return response.data;
-        }).catch(err => {
-            console.log('EEEEEXCEPTION: ' + err.toString());
+            return {
+                context: "Success",
+                statusInfo: {
+                    status: response.status,
+                    errorCode: null,
+                    message: response.data,
+                    solution: null,
+                    trace: null
+                }
+            }
+        }).catch(error => {
+            return {
+                context: "Error",
+                statusInfo: {
+                    status: error.response.data,
+                    errorCode: null,
+                    message: error.response.data,
+                    solution: null,
+                    trace: null
+                }
+            }
         });
     } catch (error) {
-        return error
+        return {
+            context: "Error",
+            statusInfo: {
+                status: 400,
+                errorCode: null,
+                message: error.message,
+                solution: null,
+                trace: null
+            }
+        }
     }
 };
 
 module.exports = {
     destination: async function (req, res) {
+        let vault;
         switch (req.params.destination) {
             case "listSecrets":
-                res.send(await listSecrets());
+                vault = await listSecrets();
+                res.status(vault.statusInfo.status).send(vault);
                 break;
             case "retrieveSecret":
-                res.send(await retrieveSecret(req.params.secretAlias));
+                vault = await retrieveSecret(req.params.secretAlias);
+                res.status(vault.statusInfo.status).send(vault);
                 break;
             case "deleteSecret":
-                res.send(await deleteSecret(req.params.secretAlias));
+                vault = await deleteSecret(req.params.secretAlias);
+                res.status(vault.statusInfo.status).send(vault);
                 break;
             case "upsertSecret":
-                res.send(await upsertSecret(req.body));
+                vault = await upsertSecret(req.body);
+                res.status(vault.statusInfo.status).send(vault);
                 break;
             case "copySecret":
-                res.send(await copySecret(req.body));
+                vault = await copySecret(req.body);
+                res.status(vault.statusInfo.status).send(vault);
                 break;
             default:
                 break;
