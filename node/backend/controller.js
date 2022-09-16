@@ -69,10 +69,14 @@ const listSecrets = function (body) {
     }
 };
 const retrieveSecret = function (body) {
-    let obj = JSON.parse(JSON.stringify(data.find(obj => {
-        return obj.name === body.params.secretAlias;
-    })));
-    if (obj != undefined) {
+    const index = data.map(function (data) {
+        return data.name;
+    }).indexOf(body.params.secretAlias);
+    let obj;
+    if (index != -1) {
+        obj = JSON.parse(JSON.stringify(data.find(obj => {
+            return obj.name === body.params.secretAlias;
+        })));
         delete obj["name"];
         return obj;
     } else {
@@ -94,17 +98,17 @@ const upsertSecret = function (body) {
     let index = data.map(function (data) {
         return data.name;
     }).indexOf(body.params.secretAlias);
-    if(index == -1){
+    if (index == -1) {
         data.push({
-            name : body.params.secretAlias,
+            name: body.params.secretAlias,
             vaultResponse: `Secret obtido com sucesso - Alias: ${body.params.secretType}`,
-            data:{...body.params.secret, updatedAt: new Date(), secretType: body.params.secretType}
+            data: { ...body.params.secret, updatedAt: new Date(), secretType: body.params.secretType }
         });
     } else {
         data[index] = {
-            name : body.params.secretAlias,
+            name: body.params.secretAlias,
             vaultResponse: `Secret obtido com sucesso - Alias: ${body.params.secretType}`,
-            data:{...body.params.secret, updatedAt: new Date(), secretType: body.params.secretType}
+            data: { ...body.params.secret, updatedAt: new Date(), secretType: body.params.secretType }
         };
     }
     return {

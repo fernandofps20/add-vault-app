@@ -29,6 +29,7 @@ const listSecrets = async function () {
             }
         }
     }).catch(error => {
+        console.log(error)
         return {
             context: "Error",
             statusInfo: {
@@ -57,6 +58,18 @@ const retrieveSecret = async function (secretAlias) {
             }
         }
     }).then(response => {
+        if (!response.data.data) {
+            return {
+                context: "Success",
+                statusInfo: {
+                    status: response.status,
+                    errorCode: null,
+                    message: response.data,
+                    solution: null,
+                    trace: null
+                }
+            }
+        }
         switch (response.data.data.secretType) {
             case "certificate":
                 //response.data.data.pkcs12Password = Buffer.from(response.data.data.pkcs12Password, 'base64').toString('utf8');
